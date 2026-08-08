@@ -116,6 +116,12 @@ $etatLabels = [
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="mt-3 text-end">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEquipmentModal">
+                            <i class="bi bi-plus-circle"></i> Ajouter un équipement
+                        </button>
+                    </div>
                 </div>
             </div>
         </main>

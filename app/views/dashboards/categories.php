@@ -52,14 +52,13 @@
                                     <th class="ps-4">ID</th>
                                     <th>Nom</th>
                                     <th>Description</th>
-                                    <th>Date de création</th>
                                     <th class="text-end pe-4">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php if (empty($categories)): ?>
                                     <tr>
-                                        <td colspan="5" class="text-center py-4 text-muted">
+                                        <td colspan="4" class="text-center py-4 text-muted">
                                             Aucune catégorie trouvée. Commencez par en ajouter une !
                                         </td>
                                     </tr>
@@ -75,16 +74,6 @@
                                             <td>
                                                 <small class="text-muted">
                                                     <?= htmlspecialchars((string) ($category['description'] ?? '-'), ENT_QUOTES, 'UTF-8'); ?>
-                                                </small>
-                                            </td>
-                                            <td>
-                                                <small>
-                                                    <?php 
-                                                        $date = $category['date_creation'] ?? '';
-                                                        if ($date) {
-                                                            echo htmlspecialchars((string) (new DateTime($date))->format('d/m/Y H:i'), ENT_QUOTES, 'UTF-8');
-                                                        }
-                                                    ?>
                                                 </small>
                                             </td>
                                             <td class="text-end pe-4">
@@ -104,6 +93,12 @@
                                 <?php endif; ?>
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="mt-3 text-end">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                            <i class="bi bi-plus-circle"></i> Ajouter une catégorie
+                        </button>
                     </div>
                 </div>
             </div>

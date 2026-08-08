@@ -47,7 +47,6 @@ final class CategoryModel extends Model
         return $this->insert('categorie', [
             'nom' => $name,
             'description' => $description,
-            'date_creation' => date('Y-m-d H:i:s'),
         ]);
     }
 
