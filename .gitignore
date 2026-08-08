@@ -1,0 +1,8 @@
+.git/
+database/
+uploads/
+scratch/
+tmp_*.php
+composer.phar
+indexF.php
+result.php

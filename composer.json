@@ -1,0 +1,10 @@
+{
+    "name": "starter/template-propre",
+    "description": "Starter PHP propre pour demarrer le projet.",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
