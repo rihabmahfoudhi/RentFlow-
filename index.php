@@ -63,6 +63,7 @@ $router->get('demande-location', [$dashboardController, 'demandeLocationForm']);
 $router->post('demande-location', [$dashboardController, 'demandeLocationSubmit']);
 $router->get('demande-succes', [$dashboardController, 'demandeSucces']);
 $router->get('telecharger-recu', [$dashboardController, 'telechargerRecu']);
+$router->get('mes-locations', [$dashboardController, 'mesLocations']);
 
 // ── 404 ───────────────────────────────────────────────────────
 $router->setNotFound([$siteController, 'notFound']);

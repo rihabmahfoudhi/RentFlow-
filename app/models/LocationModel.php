@@ -33,6 +33,22 @@ final class LocationModel extends Model
     }
 
     /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function getByClient(int $clientId): array
+    {
+        return $this->fetchAll(
+            'SELECT l.id_location, l.client_id, l.equipement_id, l.date_debut, l.date_fin,
+                    l.prix_total, l.statut, l.date_creation,
+                    e.nom AS equipement_nom, e.prix_jour
+             FROM location l
+             INNER JOIN equipement e ON e.id_eq = l.equipement_id
+             WHERE l.client_id = :client_id
+             ORDER BY l.date_creation DESC, l.id_location DESC',
+            ['client_id' => $clientId]
+        );
+    }
+    /**
      * @return array<string, mixed>|false
      */
     public function findById(int $id): array|false

@@ -42,6 +42,7 @@ final class DashboardController extends Controller
         $this->render('dashboards/client', [
             'user'  => $this->currentUser(),
             'flash' => $this->getFlash(),
+            'currentView' => 'dashboard',
         ]);
     }
 
@@ -760,10 +761,11 @@ final class DashboardController extends Controller
             $this->redirect($this->homeRedirectRoute());
         }
 
-        $this->render('dashboards/catalogue', [
+        $this->render('dashboards/client', [
             'user'       => $this->currentUser(),
             'categories' => $this->categoryModel->getAll(),
             'flash'      => $this->getFlash(),
+            'currentView'=> 'catalogue',
         ]);
     }
 
@@ -795,11 +797,12 @@ final class DashboardController extends Controller
             $this->redirect('catalogue');
         }
 
-        $this->render('dashboards/catalogue-categorie', [
+        $this->render('dashboards/client', [
             'user'        => $this->currentUser(),
             'categorie'   => $categorie,
             'equipements' => $this->equipmentModel->getByCategory($categoryId),
             'flash'       => $this->getFlash(),
+            'currentView' => 'catalogue-categorie',
         ]);
     }
 
@@ -838,10 +841,11 @@ final class DashboardController extends Controller
             $this->redirect('catalogue');
         }
 
-        $this->render('dashboards/demande-location', [
+        $this->render('dashboards/client', [
             'user'       => $this->currentUser(),
             'equipement' => $equipement,
             'flash'      => $this->getFlash(),
+            'currentView'=> 'demande-location',
         ]);
     }
 
@@ -922,10 +926,11 @@ final class DashboardController extends Controller
             $this->redirect('client-dashboard');
         }
 
-        $this->render('dashboards/demande-succes', [
+        $this->render('dashboards/client', [
             'user'     => $this->currentUser(),
             'location' => $location,
             'flash'    => $this->getFlash(),
+            'currentView' => 'demande-succes',
         ]);
     }
 
@@ -995,6 +1000,20 @@ final class DashboardController extends Controller
         $pdf->Cell(0, 10, utf8_decode('Ce document est un reçu de votre demande. L\'équipement vous sera réservé après validation.'), 0, 1, 'C');
 
         $pdf->Output('D', 'recu_location_' . $location['id_location'] . '.pdf');
+    }
+
+    public function mesLocations(): void
+    {
+        if (!$this->isAuthenticated() || $this->currentRole() !== 'Client') {
+            $this->redirect('login');
+        }
+
+        $this->render('dashboards/client', [
+            'user'        => $this->currentUser(),
+            'locations'   => $this->locationModel->getByClient((int)$_SESSION['user_id']),
+            'flash'       => $this->getFlash(),
+            'currentView' => 'mes-locations',
+        ]);
     }
 
     // =========================================================
