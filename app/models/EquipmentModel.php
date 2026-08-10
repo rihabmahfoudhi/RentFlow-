@@ -80,4 +80,25 @@ final class EquipmentModel extends Model
     {
         return $this->delete('equipement', 'id_eq = :id', ['id' => $id]);
     }
+
+    /**
+     * Récupère les équipements d'une catégorie donnée (avec jointure catégorie).
+     * Les équipements "Disponible" apparaissent en premier.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function getByCategory(int $categoryId): array
+    {
+        return $this->fetchAll(
+            'SELECT e.id_eq, e.nom, e.description, e.prix_jour, e.stock,
+                    e.seuil_alerte, e.etat, e.categorie_id, c.nom AS categorie_nom
+             FROM equipement e
+             INNER JOIN categorie c ON c.id_categorie = e.categorie_id
+             WHERE e.categorie_id = :cat_id
+             ORDER BY
+                CASE e.etat WHEN \'Disponible\' THEN 0 ELSE 1 END ASC,
+                e.nom ASC',
+            ['cat_id' => $categoryId]
+        );
+    }
 }

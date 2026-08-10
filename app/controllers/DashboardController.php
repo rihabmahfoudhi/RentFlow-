@@ -19,11 +19,15 @@ final class DashboardController extends Controller
 
     public function __construct()
     {
-        $this->userModel = new UserModel();
+        $this->userModel     = new UserModel();
         $this->categoryModel = new CategoryModel();
         $this->equipmentModel = new EquipmentModel();
         $this->locationModel = new LocationModel();
     }
+
+    // =========================================================
+    // BACKOFFICE — Dashboards
+    // =========================================================
 
     public function clientDashboard(): void
     {
@@ -36,7 +40,7 @@ final class DashboardController extends Controller
         }
 
         $this->render('dashboards/client', [
-            'user' => $this->currentUser(),
+            'user'  => $this->currentUser(),
             'flash' => $this->getFlash(),
         ]);
     }
@@ -52,7 +56,7 @@ final class DashboardController extends Controller
         }
 
         $this->render('dashboards/admin', [
-            'user' => $this->currentUser(),
+            'user'  => $this->currentUser(),
             'flash' => $this->getFlash(),
         ]);
     }
@@ -68,9 +72,9 @@ final class DashboardController extends Controller
         }
 
         $this->render('dashboards/categories', [
-            'user' => $this->currentUser(),
+            'user'       => $this->currentUser(),
             'categories' => $this->categoryModel->getAll(),
-            'flash' => $this->getFlash(),
+            'flash'      => $this->getFlash(),
         ]);
     }
 
@@ -84,7 +88,7 @@ final class DashboardController extends Controller
             $this->redirect($this->homeRedirectRoute());
         }
 
-        $action = (string) ($_POST['action'] ?? '');
+        $action   = (string) ($_POST['action'] ?? '');
         $postData = $_POST ?? [];
 
         if ($action === 'add') {
@@ -100,7 +104,7 @@ final class DashboardController extends Controller
 
     private function addCategory(array $data): void
     {
-        $nom = trim((string) ($data['nom'] ?? ''));
+        $nom         = trim((string) ($data['nom'] ?? ''));
         $description = trim((string) ($data['description'] ?? ''));
 
         if (empty($nom)) {
@@ -118,8 +122,8 @@ final class DashboardController extends Controller
 
     private function editCategory(array $data): void
     {
-        $id = (int) ($data['id'] ?? 0);
-        $nom = trim((string) ($data['nom'] ?? ''));
+        $id          = (int) ($data['id'] ?? 0);
+        $nom         = trim((string) ($data['nom'] ?? ''));
         $description = trim((string) ($data['description'] ?? ''));
 
         if (empty($id) || empty($nom)) {
@@ -129,7 +133,7 @@ final class DashboardController extends Controller
 
         try {
             $this->categoryModel->updateCategory($id, [
-                'nom' => $nom,
+                'nom'         => $nom,
                 'description' => $description ?: null,
             ]);
             $this->setFlash('success', 'Catégorie mise à jour avec succès.');
@@ -171,14 +175,13 @@ final class DashboardController extends Controller
         }
 
         $this->render('dashboards/Equipment', [
-            'user' => $this->currentUser(),
+            'user'       => $this->currentUser(),
             'equipements' => $this->equipmentModel->getAll(),
             'categories' => $this->categoryModel->getAll(),
-            'etats' => EquipmentModel::ETATS,
-            'flash' => $this->getFlash(),
+            'etats'      => EquipmentModel::ETATS,
+            'flash'      => $this->getFlash(),
         ]);
     }
-    
 
     public function equipmentAction(): void
     {
@@ -190,7 +193,7 @@ final class DashboardController extends Controller
             $this->redirect($this->homeRedirectRoute());
         }
 
-        $action = (string) ($_POST['action'] ?? '');
+        $action   = (string) ($_POST['action'] ?? '');
         $postData = $_POST ?? [];
 
         if ($action === 'add') {
@@ -213,12 +216,12 @@ final class DashboardController extends Controller
      */
     private function validateEquipmentData(array $data): ?array
     {
-        $nom = trim((string) ($data['nom'] ?? ''));
+        $nom         = trim((string) ($data['nom'] ?? ''));
         $description = trim((string) ($data['description'] ?? ''));
-        $prixJour = (string) ($data['prix_jour'] ?? '');
-        $stock = (string) ($data['stock'] ?? '');
+        $prixJour    = (string) ($data['prix_jour'] ?? '');
+        $stock       = (string) ($data['stock'] ?? '');
         $seuilAlerte = (string) ($data['seuil_alerte'] ?? '');
-        $etat = (string) ($data['etat'] ?? '');
+        $etat        = (string) ($data['etat'] ?? '');
         $categorieId = (int) ($data['categorie_id'] ?? 0);
 
         if ($nom === '') {
@@ -252,12 +255,12 @@ final class DashboardController extends Controller
         }
 
         return [
-            'nom' => $nom,
-            'description' => $description !== '' ? $description : null,
-            'prix_jour' => (float) $prixJour,
-            'stock' => (int) $stock,
+            'nom'          => $nom,
+            'description'  => $description !== '' ? $description : null,
+            'prix_jour'    => (float) $prixJour,
+            'stock'        => (int) $stock,
             'seuil_alerte' => (int) $seuilAlerte,
-            'etat' => $etat,
+            'etat'         => $etat,
             'categorie_id' => $categorieId,
         ];
     }
@@ -350,12 +353,12 @@ final class DashboardController extends Controller
         }
 
         $this->render('dashboards/locations', [
-            'user' => $this->currentUser(),
-            'locations' => $this->locationModel->getAll(),
-            'clients' => $this->userModel->getClients(),
+            'user'        => $this->currentUser(),
+            'locations'   => $this->locationModel->getAll(),
+            'clients'     => $this->userModel->getClients(),
             'equipements' => $this->equipmentModel->getAll(),
-            'statuts' => LocationModel::STATUTS,
-            'flash' => $this->getFlash(),
+            'statuts'     => LocationModel::STATUTS,
+            'flash'       => $this->getFlash(),
         ]);
     }
 
@@ -369,7 +372,7 @@ final class DashboardController extends Controller
             $this->redirect($this->homeRedirectRoute());
         }
 
-        $action = (string) ($_POST['action'] ?? '');
+        $action   = (string) ($_POST['action'] ?? '');
         $postData = $_POST ?? [];
 
         if ($action === 'add') {
@@ -389,11 +392,11 @@ final class DashboardController extends Controller
      */
     private function validateLocationData(array $data): ?array
     {
-        $clientId = (int) ($data['client_id'] ?? 0);
+        $clientId     = (int) ($data['client_id'] ?? 0);
         $equipementId = (int) ($data['equipement_id'] ?? 0);
-        $dateDebut = trim((string) ($data['date_debut'] ?? ''));
-        $dateFin = trim((string) ($data['date_fin'] ?? ''));
-        $statut = (string) ($data['statut'] ?? 'En attente');
+        $dateDebut    = trim((string) ($data['date_debut'] ?? ''));
+        $dateFin      = trim((string) ($data['date_fin'] ?? ''));
+        $statut       = (string) ($data['statut'] ?? 'En attente');
 
         if ($clientId <= 0) {
             $this->setFlash('danger', 'Veuillez selectionner un client.');
@@ -420,7 +423,7 @@ final class DashboardController extends Controller
         }
 
         $debut = \DateTimeImmutable::createFromFormat('Y-m-d', $dateDebut);
-        $fin = \DateTimeImmutable::createFromFormat('Y-m-d', $dateFin);
+        $fin   = \DateTimeImmutable::createFromFormat('Y-m-d', $dateFin);
 
         if (!$debut || $debut->format('Y-m-d') !== $dateDebut) {
             $this->setFlash('danger', 'La date de debut est invalide.');
@@ -442,16 +445,16 @@ final class DashboardController extends Controller
             return null;
         }
 
-        $days = max(1, (int) $debut->diff($fin)->days + 1);
+        $days      = max(1, (int) $debut->diff($fin)->days + 1);
         $prixTotal = $days * (float) ($equipement['prix_jour'] ?? 0);
 
         return [
-            'client_id' => $clientId,
+            'client_id'     => $clientId,
             'equipement_id' => $equipementId,
-            'date_debut' => $dateDebut,
-            'date_fin' => $dateFin,
-            'prix_total' => $prixTotal,
-            'statut' => $statut,
+            'date_debut'    => $dateDebut,
+            'date_fin'      => $dateFin,
+            'prix_total'    => $prixTotal,
+            'statut'        => $statut,
         ];
     }
 
@@ -481,7 +484,13 @@ final class DashboardController extends Controller
     {
         $id = (int) ($data['id'] ?? 0);
 
-        if ($id <= 0 || $this->locationModel->findById($id) === false) {
+        if ($id <= 0) {
+            $this->setFlash('danger', 'Données invalides.');
+            return;
+        }
+
+        $oldLocation = $this->locationModel->findById($id);
+        if ($oldLocation === false) {
             $this->setFlash('danger', 'Location introuvable.');
             return;
         }
@@ -490,6 +499,37 @@ final class DashboardController extends Controller
 
         if ($locationData === null) {
             return;
+        }
+
+        $oldStatut = (string)($oldLocation['statut'] ?? '');
+        $newStatut = (string)($locationData['statut'] ?? '');
+
+        // Logique de stock lors du changement de statut
+        $equipementId = (int)$oldLocation['equipement_id'];
+        
+        if ($oldStatut !== 'Acceptée' && $newStatut === 'Acceptée') {
+            $equipement = $this->equipmentModel->findById($equipementId);
+            if ($equipement) {
+                $stock = (int)$equipement['stock'];
+                $seuil = (int)$equipement['seuil_alerte'];
+
+                if ($stock <= $seuil) {
+                    $this->setFlash('danger', 'Impossible d\'accepter : le stock de l\'équipement a atteint son seuil d\'alerte.');
+                    return;
+                }
+
+                $this->equipmentModel->updateEquipment($equipementId, [
+                    'stock' => $stock - 1
+                ]);
+            }
+        } elseif (($oldStatut === 'Acceptée' || $oldStatut === 'En cours') && ($newStatut === 'Annulée' || $newStatut === 'Terminée')) {
+            $equipement = $this->equipmentModel->findById($equipementId);
+            if ($equipement) {
+                $stock = (int)$equipement['stock'];
+                $this->equipmentModel->updateEquipment($equipementId, [
+                    'stock' => $stock + 1
+                ]);
+            }
         }
 
         try {
@@ -531,7 +571,7 @@ final class DashboardController extends Controller
         }
 
         $this->render('dashboards/users', [
-            'user' => $this->currentUser(),
+            'user'  => $this->currentUser(),
             'users' => $this->userModel->getAll(),
             'roles' => UserModel::ROLES,
             'flash' => $this->getFlash(),
@@ -548,7 +588,7 @@ final class DashboardController extends Controller
             $this->redirect($this->homeRedirectRoute());
         }
 
-        $action = (string) ($_POST['action'] ?? '');
+        $action   = (string) ($_POST['action'] ?? '');
         $postData = $_POST ?? [];
 
         if ($action === 'add') {
@@ -568,12 +608,12 @@ final class DashboardController extends Controller
      */
     private function validateUserData(array $data, ?int $existingUserId = null): ?array
     {
-        $nom = trim((string) ($data['nom'] ?? ''));
-        $prenom = trim((string) ($data['prenom'] ?? ''));
-        $email = strtolower(trim((string) ($data['email'] ?? '')));
+        $nom       = trim((string) ($data['nom'] ?? ''));
+        $prenom    = trim((string) ($data['prenom'] ?? ''));
+        $email     = strtolower(trim((string) ($data['email'] ?? '')));
         $telephone = trim((string) ($data['telephone'] ?? ''));
-        $role = (string) ($data['role'] ?? '');
-        $password = (string) ($data['mot_de_passe'] ?? '');
+        $role      = (string) ($data['role'] ?? '');
+        $password  = (string) ($data['mot_de_passe'] ?? '');
 
         if ($nom === '') {
             $this->setFlash('danger', 'Le nom est obligatoire.');
@@ -611,11 +651,11 @@ final class DashboardController extends Controller
         }
 
         $userData = [
-            'nom' => $nom,
-            'prenom' => $prenom,
-            'email' => $email,
+            'nom'       => $nom,
+            'prenom'    => $prenom,
+            'email'     => $email,
             'telephone' => $telephone !== '' ? $telephone : null,
-            'role' => $role,
+            'role'      => $role,
         ];
 
         if ($password !== '') {
@@ -666,9 +706,9 @@ final class DashboardController extends Controller
             $this->userModel->updateUser($id, $userData);
 
             if ($id === (int) ($_SESSION['user_id'] ?? 0)) {
-                $_SESSION['nom'] = (string) $userData['nom'];
+                $_SESSION['nom']    = (string) $userData['nom'];
                 $_SESSION['prenom'] = (string) $userData['prenom'];
-                $_SESSION['role'] = (string) $userData['role'];
+                $_SESSION['role']   = (string) $userData['role'];
             }
 
             $this->setFlash('success', 'Utilisateur mis a jour avec succes.');
@@ -702,6 +742,265 @@ final class DashboardController extends Controller
         }
     }
 
+    // =========================================================
+    // FRONTOFFICE CLIENT — Catalogue
+    // =========================================================
+
+    /**
+     * Affiche la liste de toutes les catégories (FrontOffice Client).
+     */
+    public function catalogue(): void
+    {
+        if (!$this->isAuthenticated()) {
+            $this->setFlash('warning', 'Vous devez être connecté pour accéder au catalogue.');
+            $this->redirect('login');
+        }
+
+        if (!in_array($this->currentRole(), ['Client', 'Agent', 'Responsable'], true)) {
+            $this->redirect($this->homeRedirectRoute());
+        }
+
+        $this->render('dashboards/catalogue', [
+            'user'       => $this->currentUser(),
+            'categories' => $this->categoryModel->getAll(),
+            'flash'      => $this->getFlash(),
+        ]);
+    }
+
+    /**
+     * Affiche les équipements d'une catégorie donnée (FrontOffice Client).
+     */
+    public function catalogueCategorie(): void
+    {
+        if (!$this->isAuthenticated()) {
+            $this->setFlash('warning', 'Vous devez être connecté pour accéder au catalogue.');
+            $this->redirect('login');
+        }
+
+        if (!in_array($this->currentRole(), ['Client', 'Agent', 'Responsable'], true)) {
+            $this->redirect($this->homeRedirectRoute());
+        }
+
+        $categoryId = (int) ($_GET['id_categorie'] ?? 0);
+
+        if ($categoryId <= 0) {
+            $this->setFlash('danger', 'Catégorie introuvable.');
+            $this->redirect('catalogue');
+        }
+
+        $categorie = $this->categoryModel->findById($categoryId);
+
+        if ($categorie === false) {
+            $this->setFlash('danger', 'Cette catégorie n\'existe pas.');
+            $this->redirect('catalogue');
+        }
+
+        $this->render('dashboards/catalogue-categorie', [
+            'user'        => $this->currentUser(),
+            'categorie'   => $categorie,
+            'equipements' => $this->equipmentModel->getByCategory($categoryId),
+            'flash'       => $this->getFlash(),
+        ]);
+    }
+
+    // =========================================================
+    // FRONTOFFICE CLIENT — Demande de Location
+    // =========================================================
+
+    public function demandeLocationForm(): void
+    {
+        if (!$this->isAuthenticated()) {
+            $this->setFlash('warning', 'Vous devez être connecté pour accéder à cette page.');
+            $this->redirect('login');
+        }
+
+        if ($this->currentRole() !== 'Client') {
+            $this->setFlash('warning', 'Seuls les clients peuvent effectuer une demande de location.');
+            $this->redirect($this->homeRedirectRoute());
+        }
+
+        $equipementId = (int) ($_GET['id_eq'] ?? 0);
+
+        if ($equipementId <= 0) {
+            $this->setFlash('danger', 'Équipement introuvable.');
+            $this->redirect('catalogue');
+        }
+
+        $equipement = $this->equipmentModel->findById($equipementId);
+
+        if ($equipement === false) {
+            $this->setFlash('danger', 'Cet équipement n\'existe pas.');
+            $this->redirect('catalogue');
+        }
+
+        if (($equipement['etat'] ?? '') !== 'Disponible' || ((int) ($equipement['stock'] ?? 0)) <= 0) {
+            $this->setFlash('warning', 'Cet équipement n\'est pas disponible pour la location.');
+            $this->redirect('catalogue');
+        }
+
+        $this->render('dashboards/demande-location', [
+            'user'       => $this->currentUser(),
+            'equipement' => $equipement,
+            'flash'      => $this->getFlash(),
+        ]);
+    }
+
+    public function demandeLocationSubmit(): void
+    {
+        if (!$this->isAuthenticated()) {
+            $this->setFlash('warning', 'Vous devez être connecté.');
+            $this->redirect('login');
+        }
+
+        if ($this->currentRole() !== 'Client') {
+            $this->setFlash('warning', 'Accès refusé.');
+            $this->redirect($this->homeRedirectRoute());
+        }
+
+        $clientId = (int) ($_SESSION['user_id'] ?? 0);
+        $equipementId = (int) ($_POST['equipement_id'] ?? 0);
+        $dateDebut = trim((string) ($_POST['date_debut'] ?? ''));
+        $dateFin = trim((string) ($_POST['date_fin'] ?? ''));
+
+        if ($equipementId <= 0 || empty($dateDebut) || empty($dateFin)) {
+            $this->setFlash('danger', 'Tous les champs sont obligatoires.');
+            $this->redirect('demande-location&id_eq=' . $equipementId);
+        }
+
+        $equipement = $this->equipmentModel->findById($equipementId);
+        if ($equipement === false || ($equipement['etat'] ?? '') !== 'Disponible' || ((int) ($equipement['stock'] ?? 0)) <= 0) {
+            $this->setFlash('danger', 'Équipement indisponible.');
+            $this->redirect('catalogue');
+        }
+
+        $debut = \DateTimeImmutable::createFromFormat('Y-m-d', $dateDebut);
+        $fin = \DateTimeImmutable::createFromFormat('Y-m-d', $dateFin);
+
+        if (!$debut || !$fin || $fin < $debut) {
+            $this->setFlash('danger', 'Les dates de location sont invalides.');
+            $this->redirect('demande-location&id_eq=' . $equipementId);
+        }
+
+        $today = new \DateTimeImmutable('today');
+        if ($debut < $today) {
+             $this->setFlash('danger', 'La date de début ne peut pas être dans le passé.');
+             $this->redirect('demande-location&id_eq=' . $equipementId);
+        }
+
+        $days = max(1, (int) $debut->diff($fin)->days + 1);
+        $prixTotal = $days * (float) ($equipement['prix_jour'] ?? 0);
+
+        $locationData = [
+            'client_id' => $clientId,
+            'equipement_id' => $equipementId,
+            'date_debut' => $dateDebut,
+            'date_fin' => $dateFin,
+            'prix_total' => $prixTotal,
+            'statut' => 'En attente',
+        ];
+
+        try {
+            $locationId = $this->locationModel->create($locationData);
+            $this->redirect('demande-succes&id=' . $locationId);
+        } catch (\Exception $e) {
+            $this->setFlash('danger', 'Une erreur est survenue lors de la demande : ' . $e->getMessage());
+            $this->redirect('demande-location&id_eq=' . $equipementId);
+        }
+    }
+
+    public function demandeSucces(): void
+    {
+        if (!$this->isAuthenticated() || $this->currentRole() !== 'Client') {
+            $this->redirect('login');
+        }
+
+        $id = (int) ($_GET['id'] ?? 0);
+        $location = $this->locationModel->findById($id);
+
+        if ($location === false || (int)$location['client_id'] !== (int)$_SESSION['user_id']) {
+            $this->setFlash('danger', 'Location introuvable.');
+            $this->redirect('client-dashboard');
+        }
+
+        $this->render('dashboards/demande-succes', [
+            'user'     => $this->currentUser(),
+            'location' => $location,
+            'flash'    => $this->getFlash(),
+        ]);
+    }
+
+    public function telechargerRecu(): void
+    {
+        if (!$this->isAuthenticated() || $this->currentRole() !== 'Client') {
+            $this->redirect('login');
+        }
+
+        $id = (int) ($_GET['id'] ?? 0);
+        $location = $this->locationModel->findById($id);
+
+        if ($location === false || (int)$location['client_id'] !== (int)$_SESSION['user_id']) {
+            $this->setFlash('danger', 'Location introuvable ou accès refusé.');
+            $this->redirect('client-dashboard');
+        }
+
+        require_once __DIR__ . '/../core/fpdf/fpdf.php';
+
+        $pdf = new \FPDF();
+        $pdf->AddPage();
+        
+        // En-tête
+        $pdf->SetFont('Arial', 'B', 18);
+        $pdf->Cell(0, 12, utf8_decode('REÇU DE LOCATION - RENTFLOW'), 0, 1, 'C');
+        $pdf->Ln(10);
+        
+        $pdf->SetFont('Arial', '', 12);
+        
+        // Informations du reçu
+        $pdf->SetFillColor(245, 247, 250);
+        
+        $pdf->Cell(50, 10, utf8_decode('Numéro de demande :'), 0, 0);
+        $pdf->Cell(0, 10, '#' . $location['id_location'], 0, 1);
+        
+        $pdf->Cell(50, 10, 'Date de demande :', 0, 0);
+        $pdf->Cell(0, 10, date('d/m/Y', strtotime($location['date_creation'] ?? 'now')), 0, 1);
+        
+        $pdf->Cell(50, 10, 'Client :', 0, 0);
+        $pdf->Cell(0, 10, utf8_decode($location['client_prenom'] . ' ' . $location['client_nom']), 0, 1);
+        
+        $pdf->Ln(5);
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, utf8_decode('Détails de l\'équipement'), 0, 1, 'L', true);
+        $pdf->SetFont('Arial', '', 12);
+        
+        $pdf->Cell(50, 10, utf8_decode('Équipement :'), 0, 0);
+        $pdf->Cell(0, 10, utf8_decode((string)$location['equipement_nom']), 0, 1);
+        
+        $pdf->Cell(50, 10, utf8_decode('Période :'), 0, 0);
+        $pdf->Cell(0, 10, 'Du ' . date('d/m/Y', strtotime($location['date_debut'])) . ' au ' . date('d/m/Y', strtotime($location['date_fin'])), 0, 1);
+        
+        $pdf->Cell(50, 10, 'Statut de demande :', 0, 0);
+        $pdf->Cell(0, 10, utf8_decode((string)$location['statut']), 0, 1);
+        
+        $pdf->Ln(10);
+        
+        // Total
+        $pdf->SetFont('Arial', 'B', 14);
+        $pdf->Cell(50, 12, 'PRIX TOTAL :', 0, 0);
+        $pdf->SetTextColor(15, 118, 110);
+        $pdf->Cell(0, 12, number_format((float)$location['prix_total'], 2, ',', ' ') . ' dt', 0, 1);
+        
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->Ln(20);
+        $pdf->SetFont('Arial', 'I', 10);
+        $pdf->Cell(0, 10, utf8_decode('Ce document est un reçu de votre demande. L\'équipement vous sera réservé après validation.'), 0, 1, 'C');
+
+        $pdf->Output('D', 'recu_location_' . $location['id_location'] . '.pdf');
+    }
+
+    // =========================================================
+    // Session helpers
+    // =========================================================
+
     public function logout(): void
     {
         if ($this->isAuthenticated()) {
@@ -726,10 +1025,10 @@ final class DashboardController extends Controller
     private function currentUser(): array
     {
         return [
-            'id' => (int) ($_SESSION['user_id'] ?? 0),
-            'nom' => (string) ($_SESSION['nom'] ?? ''),
+            'id'     => (int) ($_SESSION['user_id'] ?? 0),
+            'nom'    => (string) ($_SESSION['nom'] ?? ''),
             'prenom' => (string) ($_SESSION['prenom'] ?? ''),
-            'role' => $this->currentRole(),
+            'role'   => $this->currentRole(),
         ];
     }
 

@@ -13,7 +13,7 @@ final class LocationModel extends Model
      *
      * @var array<int, string>
      */
-    public const STATUTS = ['En attente', 'Validee', 'En cours', 'Terminee', 'Annulee'];
+    public const STATUTS = ['En attente', 'Acceptée', 'En cours', 'Terminée', 'Annulée'];
 
     /**
      * @return array<int, array<string, mixed>>

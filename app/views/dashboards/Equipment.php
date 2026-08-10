@@ -59,12 +59,13 @@ $etatLabels = [
                                 <tr>
                                     <th class="ps-4">ID</th>
                                     <th>Nom</th>
+                                    <th>Catégorie</th>
                                     <th>Description</th>
                                     <th>Prix/jour</th>
                                     <th>Stock</th>
                                     <th>Seuil alerte</th>
                                     <th>État</th>
-                                    <th>Catégorie</th>
+                                    
                                     <th class="text-end pe-4">Actions</th>
                                 </tr>
                             </thead>
@@ -88,6 +89,7 @@ $etatLabels = [
                                             <td>
                                                 <strong><?= htmlspecialchars((string) ($eq['nom'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></strong>
                                             </td>
+                                            <td><?= htmlspecialchars((string) ($eq['categorie_nom'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></td> 
                                             <td>
                                                 <small class="text-muted">
                                                     <?= htmlspecialchars((string) ($eq['description'] ?? '-'), ENT_QUOTES, 'UTF-8'); ?>
@@ -97,7 +99,7 @@ $etatLabels = [
                                             <td><?= htmlspecialchars((string) ($eq['stock'] ?? 0), ENT_QUOTES, 'UTF-8'); ?></td>
                                             <td><?= htmlspecialchars((string) ($eq['seuil_alerte'] ?? 0), ENT_QUOTES, 'UTF-8'); ?></td>
                                             <td><span class="badge bg-<?= $etatColor; ?>"><?= htmlspecialchars($etatLabel, ENT_QUOTES, 'UTF-8'); ?></span></td>
-                                            <td><?= htmlspecialchars((string) ($eq['categorie_nom'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
+                                            
                                             <td class="text-end pe-4">
                                                 <button type="button" class="btn btn-sm btn-outline-primary"
                                                     data-bs-toggle="modal"
