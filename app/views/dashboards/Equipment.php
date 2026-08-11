@@ -51,6 +51,30 @@ $etatLabels = [
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php endif; ?>
+
+                    <?php
+                        $stockAlerts = array_filter($equipements, static function ($e): bool {
+                            return (int) ($e['stock'] ?? 0) <= (int) ($e['seuil_alerte'] ?? 0);
+                        });
+                    ?>
+                    <?php if (!empty($stockAlerts)): ?>
+                        <div class="alert alert-warning d-flex align-items-start gap-2 rounded-3 mb-4" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+                            <div>
+                                <strong><?= count($stockAlerts); ?></strong>
+                                équipement<?= count($stockAlerts) > 1 ? 's ont' : ' a'; ?> atteint le seuil d'alerte de stock :
+                                <ul class="mb-0 mt-1">
+                                    <?php foreach ($stockAlerts as $alertEq): ?>
+                                        <li>
+                                            <strong><?= htmlspecialchars((string) ($alertEq['nom'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></strong>
+                                            — stock actuel : <?= (int) ($alertEq['stock'] ?? 0); ?> / seuil : <?= (int) ($alertEq['seuil_alerte'] ?? 0); ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
                     <!-- Formulaire de recherche multicritere -->
                     <form method="GET" action="index.php" class="row g-3 align-items-end mb-4 p-3 rounded-3" style="background:#f8fafc; border:1px solid #e9ecef;">
                         <input type="hidden" name="route" value="equipements">
@@ -128,8 +152,9 @@ $etatLabels = [
                                         <?php
                                             $etatKey = (string) ($eq['etat'] ?? 'disponible');
                                             [$etatLabel, $etatColor] = $etatLabels[$etatKey] ?? [$etatKey, 'secondary'];
+                                            $isLowStock = (int) ($eq['stock'] ?? 0) <= (int) ($eq['seuil_alerte'] ?? 0);
                                         ?>
-                                        <tr>
+                                        <tr class="<?= $isLowStock ? 'table-warning' : ''; ?>">
                                             <td class="ps-4">
                                                 <span class="badge bg-light text-dark"><?= htmlspecialchars((string) ($eq['id_eq'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></span>
                                             </td>
@@ -143,7 +168,14 @@ $etatLabels = [
                                                 </small>
                                             </td>
                                             <td><?= htmlspecialchars(number_format((float) ($eq['prix_jour'] ?? 0), 2, ',', ' '), ENT_QUOTES, 'UTF-8'); ?> DT</td>
-                                            <td><?= htmlspecialchars((string) ($eq['stock'] ?? 0), ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td>
+                                                <?= htmlspecialchars((string) ($eq['stock'] ?? 0), ENT_QUOTES, 'UTF-8'); ?>
+                                                <?php if ($isLowStock): ?>
+                                                    <span class="badge bg-danger ms-1" title="Stock au seuil d'alerte">
+                                                        <i class="bi bi-exclamation-triangle-fill"></i> Alerte
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
                                             <td><?= htmlspecialchars((string) ($eq['seuil_alerte'] ?? 0), ENT_QUOTES, 'UTF-8'); ?></td>
                                             <td><span class="badge bg-<?= $etatColor; ?>"><?= htmlspecialchars($etatLabel, ENT_QUOTES, 'UTF-8'); ?></span></td>
                                             
@@ -350,4 +382,3 @@ function deleteEquipmentConfirm(id) {
     }, false);
 })();
 </script>
-
