@@ -114,6 +114,10 @@ $statutLabels = [
                                                 </small>
                                             </td>
                                             <td class="text-end pe-4">
+                                                <a href="index.php?route=generer-facture&id=<?= (int) ($location['id_location'] ?? 0); ?>"
+                                                    class="btn btn-sm btn-outline-success" target="_blank" title="Generer la facture PDF">
+                                                    <i class="bi bi-file-earmark-pdf"></i> Facture
+                                                </a>
                                                 <button type="button" class="btn btn-sm btn-outline-primary"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#editLocationModal"

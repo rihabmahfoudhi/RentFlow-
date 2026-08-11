@@ -175,12 +175,25 @@ final class DashboardController extends Controller
             $this->redirect($this->homeRedirectRoute());
         }
 
+        $searchId         = trim((string) ($_GET['search_id'] ?? ''));
+        $searchEtat       = trim((string) ($_GET['search_etat'] ?? ''));
+        $searchCategorie  = trim((string) ($_GET['search_categorie'] ?? ''));
+
+        $equipements = $this->equipmentModel->search(
+            $searchId !== '' ? (int) $searchId : null,
+            $searchEtat !== '' ? $searchEtat : null,
+            $searchCategorie !== '' ? (int) $searchCategorie : null
+        );
+
         $this->render('dashboards/Equipment', [
-            'user'       => $this->currentUser(),
-            'equipements' => $this->equipmentModel->getAll(),
-            'categories' => $this->categoryModel->getAll(),
-            'etats'      => EquipmentModel::ETATS,
-            'flash'      => $this->getFlash(),
+            'user'             => $this->currentUser(),
+            'equipements'      => $equipements,
+            'categories'       => $this->categoryModel->getAll(),
+            'etats'            => EquipmentModel::ETATS,
+            'flash'            => $this->getFlash(),
+            'searchId'         => $searchId,
+            'searchEtat'       => $searchEtat,
+            'searchCategorie'  => $searchCategorie,
         ]);
     }
 
@@ -1000,6 +1013,105 @@ final class DashboardController extends Controller
         $pdf->Cell(0, 10, utf8_decode('Ce document est un reçu de votre demande. L\'équipement vous sera réservé après validation.'), 0, 1, 'C');
 
         $pdf->Output('D', 'recu_location_' . $location['id_location'] . '.pdf');
+    }
+        public function genererFacture(): void
+    {
+        if (!$this->isAuthenticated() || !in_array($this->currentRole(), ['Agent', 'Responsable'], true)) {
+            $this->redirect($this->homeRedirectRoute());
+        }
+
+        $id       = (int) ($_GET['id'] ?? 0);
+        $location = $this->locationModel->findById($id);
+
+        if ($location === false) {
+            $this->setFlash('danger', 'Location introuvable.');
+            $this->redirect('locations');
+        }
+
+        // Calcul automatique de la durée (en jours) à partir des dates
+        $dateDebut = new \DateTimeImmutable((string) $location['date_debut']);
+        $dateFin   = new \DateTimeImmutable((string) $location['date_fin']);
+        $duree     = max(1, (int) $dateDebut->diff($dateFin)->days + 1);
+
+        $prixJour  = (float) ($location['prix_jour'] ?? 0);
+        $prixTotal = (float) ($location['prix_total'] ?? ($prixJour * $duree));
+
+        require_once __DIR__ . '/../core/fpdf/fpdf.php';
+
+        $pdf = new \FPDF();
+        $pdf->AddPage();
+
+        // En-tête
+        $pdf->SetFont('Arial', 'B', 18);
+        $pdf->Cell(0, 12, utf8_decode('FACTURE DE LOCATION - RENTFLOW'), 0, 1, 'C');
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->SetTextColor(100, 100, 100);
+        $pdf->Cell(0, 8, utf8_decode('Facture N° FAC-' . str_pad((string) $location['id_location'], 5, '0', STR_PAD_LEFT)), 0, 1, 'C');
+        $pdf->Cell(0, 8, 'Date d\'emission : ' . date('d/m/Y'), 0, 1, 'C');
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->Ln(8);
+
+        // Bloc client
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, utf8_decode('Informations client'), 0, 1, 'L', true);
+        $pdf->SetFont('Arial', '', 12);
+
+        $pdf->Cell(60, 10, utf8_decode('Client (ID) :'), 0, 0);
+        $pdf->Cell(0, 10, '#' . (int) $location['client_id'] . ' - ' . utf8_decode(trim((string) ($location['client_prenom'] ?? '') . ' ' . (string) ($location['client_nom'] ?? ''))), 0, 1);
+
+        $pdf->Cell(60, 10, 'Email :', 0, 0);
+        $pdf->Cell(0, 10, (string) ($location['client_email'] ?? ''), 0, 1);
+
+        $pdf->Ln(6);
+
+        // Bloc équipement / location
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, utf8_decode('Détails de la location'), 0, 1, 'L', true);
+        $pdf->SetFont('Arial', '', 12);
+
+        $pdf->Cell(60, 10, utf8_decode('Équipement (ID) :'), 0, 0);
+        $pdf->Cell(0, 10, '#' . (int) $location['equipement_id'] . ' - ' . utf8_decode((string) ($location['equipement_nom'] ?? '')), 0, 1);
+
+        $pdf->Cell(60, 10, utf8_decode('Période :'), 0, 0);
+        $pdf->Cell(0, 10, 'Du ' . date('d/m/Y', strtotime((string) $location['date_debut'])) . ' au ' . date('d/m/Y', strtotime((string) $location['date_fin'])), 0, 1);
+
+        $pdf->Cell(60, 10, utf8_decode('Durée :'), 0, 0);
+        $pdf->Cell(0, 10, $duree . ' jour' . ($duree > 1 ? 's' : ''), 0, 1);
+
+        $pdf->Ln(6);
+
+        // Tableau tarification
+        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->SetFillColor(15, 118, 110);
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->Cell(80, 10, utf8_decode('Désignation'), 1, 0, 'L', true);
+        $pdf->Cell(35, 10, 'Prix / jour', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, utf8_decode('Durée'), 1, 0, 'C', true);
+        $pdf->Cell(45, 10, 'Total', 1, 1, 'C', true);
+
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->Cell(80, 10, utf8_decode((string) ($location['equipement_nom'] ?? '')), 1, 0, 'L');
+        $pdf->Cell(35, 10, number_format($prixJour, 2, ',', ' ') . ' dt', 1, 0, 'C');
+        $pdf->Cell(30, 10, $duree . ' j', 1, 0, 'C');
+        $pdf->Cell(45, 10, number_format($prixTotal, 2, ',', ' ') . ' dt', 1, 1, 'C');
+
+        $pdf->Ln(10);
+
+        // Total général
+        $pdf->SetFont('Arial', 'B', 14);
+        $pdf->Cell(125, 12, '', 0, 0);
+        $pdf->Cell(20, 12, 'TOTAL :', 0, 0, 'R');
+        $pdf->SetTextColor(15, 118, 110);
+        $pdf->Cell(45, 12, number_format($prixTotal, 2, ',', ' ') . ' dt', 0, 1, 'C');
+
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->Ln(15);
+        $pdf->SetFont('Arial', 'I', 10);
+        $pdf->Cell(0, 10, utf8_decode('Facture generee automatiquement par RentFlow.'), 0, 1, 'C');
+
+        $pdf->Output('D', 'facture_location_' . $location['id_location'] . '.pdf');
     }
 
     public function mesLocations(): void

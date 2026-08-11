@@ -52,6 +52,7 @@ $router->get('equipements', [$dashboardController, 'equipment']);
 $router->post('equipements', [$dashboardController, 'equipmentAction']);
 $router->get('locations', [$dashboardController, 'locations']);
 $router->post('locations', [$dashboardController, 'locationsAction']);
+$router->get('generer-facture', [$dashboardController, 'genererFacture']);
 $router->get('utilisateurs', [$dashboardController, 'users']);
 $router->post('utilisateurs', [$dashboardController, 'usersAction']);
 $router->get('logout', [$dashboardController, 'logout']);

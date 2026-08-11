@@ -51,6 +51,49 @@ $etatLabels = [
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php endif; ?>
+                    <!-- Formulaire de recherche multicritere -->
+                    <form method="GET" action="index.php" class="row g-3 align-items-end mb-4 p-3 rounded-3" style="background:#f8fafc; border:1px solid #e9ecef;">
+                        <input type="hidden" name="route" value="equipements">
+
+                        <div class="col-md-3">
+                            <label for="searchId" class="form-label fw-bold small">Recherche par ID</label>
+                            <input type="number" min="1" class="form-control rounded-3" id="searchId" name="search_id"
+                                placeholder="Ex: 5" value="<?= htmlspecialchars((string) ($searchId ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="searchEtat" class="form-label fw-bold small">Recherche par état</label>
+                            <select class="form-select rounded-3" id="searchEtat" name="search_etat">
+                                <option value="">Tous les états</option>
+                                <?php foreach ($etats as $etatValue): ?>
+                                    <option value="<?= htmlspecialchars($etatValue, ENT_QUOTES, 'UTF-8'); ?>" <?= ($searchEtat ?? '') === $etatValue ? 'selected' : ''; ?>>
+                                        <?= htmlspecialchars($etatLabels[$etatValue][0] ?? $etatValue, ENT_QUOTES, 'UTF-8'); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="searchCategorie" class="form-label fw-bold small">Recherche par catégorie</label>
+                            <select class="form-select rounded-3" id="searchCategorie" name="search_categorie">
+                                <option value="">Toutes les catégories</option>
+                                <?php foreach ($categories as $cat): ?>
+                                    <option value="<?= (int) ($cat['id_categorie'] ?? 0); ?>" <?= (string) ($searchCategorie ?? '') === (string) ($cat['id_categorie'] ?? '') ? 'selected' : ''; ?>>
+                                        <?= htmlspecialchars((string) ($cat['nom'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary rounded-3 flex-grow-1">
+                                <i class="bi bi-search"></i> Rechercher
+                            </button>
+                            <a href="index.php?route=equipements" class="btn btn-outline-secondary rounded-3" title="Réinitialiser">
+                                <i class="bi bi-x-circle"></i>
+                            </a>
+                        </div>
+                    </form>
 
                     <!-- Tableau des equipements -->
                     <div class="table-responsive">
@@ -73,7 +116,11 @@ $etatLabels = [
                                 <?php if (empty($equipements)): ?>
                                     <tr>
                                         <td colspan="9" class="text-center py-4 text-muted">
-                                            Aucun équipement trouvé. Commencez par en ajouter un !
+                                            <?php if (($searchId ?? '') !== '' || ($searchEtat ?? '') !== '' || ($searchCategorie ?? '') !== ''): ?>
+                                                Aucun équipement ne correspond à ces critères de recherche.
+                                            <?php else: ?>
+                                                Aucun équipement trouvé. Commencez par en ajouter un !
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                 <?php else: ?>
