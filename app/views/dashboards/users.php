@@ -11,7 +11,7 @@ $roleLabels = [
             <div class="card shadow-sm border-0 rounded-4 h-100" style="background:#0f172a; color:white;">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <img src="img/logo-rentflow.svg" alt="RentFlow Logo" style="height:100px;">
+                        <img src="img/logo.png" alt="RentFlow Logo" style="height:100px; background-color: white; padding: 5px; border-radius: 5px;">
                         <div>
                             <h5 class="mb-0">Back Office</h5>
                             <p class="mb-0 text-white-50">Administration</p>
@@ -21,7 +21,7 @@ $roleLabels = [
                         <a href="index.php?route=categories" class="list-group-item list-group-item-action rounded-3 mb-2">Categories des equipements</a>
                         <a href="index.php?route=equipements" class="list-group-item list-group-item-action rounded-3 mb-2">Equipements</a>
                         <a href="index.php?route=locations" class="list-group-item list-group-item-action rounded-3 mb-2">Locations</a>
-                        <a href="index.php?route=admin-dashboard" class="list-group-item list-group-item-action rounded-3 mb-2">Retours</a>
+                        <a href="index.php?route=retours" class="list-group-item list-group-item-action rounded-3 mb-2">Retours</a>
                         <a href="index.php?route=utilisateurs" class="list-group-item list-group-item-action rounded-3 mb-2 active">Utilisateurs</a>
                         <a href="index.php?route=client-dashboard" class="list-group-item list-group-item-action rounded-3 mb-2">Espace client</a>
                     </div>

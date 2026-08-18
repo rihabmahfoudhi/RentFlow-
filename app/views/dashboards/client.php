@@ -50,7 +50,7 @@ $prixJour = isset($equipement) ? (float)($equipement['prix_jour'] ?? 0) : 0;
     <aside class="fo-sidebar">
         <div class="fo-sidebar-inner">
             <div class="fo-brand">
-                <img src="img/logo-rentflow.svg" alt="RentFlow" class="fo-logo">
+                <img src="img/logo.png" alt="RentFlow Logo" class="fo-logo" style="background-color: white; padding: 5px; border-radius: 5px;">
                 <div>
                     <div class="fo-brand-name">Front Office</div>
                     <div class="fo-brand-role">Client</div>

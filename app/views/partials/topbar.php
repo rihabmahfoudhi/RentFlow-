@@ -1,7 +1,7 @@
 <?php $siteName = htmlspecialchars((string) ($siteName ?? 'RentFlow'), ENT_QUOTES, 'UTF-8'); ?>
 
 <nav class="navbar navbar-expand-lg navbar-dark px-4 py-3" style="background: linear-gradient(135deg, #0f172a, #111827);">
-    <a href="index.php?route=home" class="navbar-brand fw-bold text-white"><img src="img/logo-rentflow.svg" alt="RentFlow Logo" style="height:80px;"></a>
+    <a href="index.php?route=home" class="navbar-brand fw-bold text-white"><img src="img/logo.png" alt="RentFlow Logo" style="height:80px; background-color: white; padding: 5px; border-radius: 5px;"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
     </button>

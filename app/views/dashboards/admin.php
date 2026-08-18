@@ -4,21 +4,21 @@
             <div class="card shadow-sm border-0 rounded-4 h-100" style="background:#0f172a; color:white;">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <img src="img/logo-rentflow.svg" alt="RentFlow Logo" style="height:100px;">
+                        <img src="img/logo.png" alt="RentFlow Logo" style="height:100px; background-color: white; padding: 5px; border-radius: 5px;">
                         <div>
                             <h5 class="mb-0">Back Office</h5>
                             <p class="mb-0 text-white-50">Administration</p>
                         </div>
                     </div>
                     <div class="list-group list-group-flush mb-4">
-                        <a href="index.php?route=categories" class="list-group-item list-group-item-action rounded-3 mb-2"> Catégories des équipements</a>
+                        <a href="index.php?route=categories" class="list-group-item list-group-item-action rounded-3 mb-2"> CatÃ©gories des Ã©quipements</a>
                         <a href="index.php?route=equipements" class="list-group-item list-group-item-action rounded-3 mb-2"> Equipements</a> 
                         <a href="index.php?route=locations" class="list-group-item list-group-item-action rounded-3 mb-2"> Locations</a>
-                        <a href="index.php?route=admin-dashboard" class="list-group-item list-group-item-action rounded-3 mb-2"> Retours</a>
+                        <a href="index.php?route=retours" class="list-group-item list-group-item-action rounded-3 mb-2"> Retours</a>
                         <a href="index.php?route=utilisateurs" class="list-group-item list-group-item-action rounded-3 mb-2"> Utilisateurs</a>
                         <a href="index.php?route=client-dashboard" class="list-group-item list-group-item-action rounded-3 mb-2"> Espace client</a>
                     </div>
-                    <a href="index.php?route=logout" class="btn btn-danger w-100">🚪 Déconnexion</a>
+                    <a href="index.php?route=logout" class="btn btn-danger w-100">ðŸšª DÃ©connexion</a>
                 </div>
             </div>
         </aside>
@@ -43,13 +43,13 @@
                         <div class="col-md-6">
                             <div class="border rounded-4 p-4 h-100 bg-white">
                                 <h5 class="fw-bold mb-2">Gestion du catalogue</h5>
-                                <p class="text-muted mb-0">Ajoutez, modifiez et gérez les équipements et leurs catégories.</p>
+                                <p class="text-muted mb-0">Ajoutez, modifiez et gÃ©rez les Ã©quipements et leurs catÃ©gories.</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="border rounded-4 p-4 h-100 bg-white">
                                 <h5 class="fw-bold mb-2">Suivi des locations</h5>
-                                <p class="text-muted mb-0">Consultez les réservations, les retours et l’activité des utilisateurs.</p>
+                                <p class="text-muted mb-0">Consultez les rÃ©servations, les retours et lâ€™activitÃ© des utilisateurs.</p>
                             </div>
                         </div>
                     </div>
@@ -58,3 +58,4 @@
         </main>
     </div>
 </div>
+

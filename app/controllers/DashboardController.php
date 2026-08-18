@@ -9,6 +9,7 @@ use App\Models\UserModel;
 use App\Models\CategoryModel;
 use App\Models\EquipmentModel;
 use App\Models\LocationModel;
+use App\Models\RetourModel;
 
 final class DashboardController extends Controller
 {
@@ -16,6 +17,7 @@ final class DashboardController extends Controller
     private CategoryModel $categoryModel;
     private EquipmentModel $equipmentModel;
     private LocationModel $locationModel;
+    private RetourModel $retourModel;
 
     public function __construct()
     {
@@ -23,6 +25,7 @@ final class DashboardController extends Controller
         $this->categoryModel = new CategoryModel();
         $this->equipmentModel = new EquipmentModel();
         $this->locationModel = new LocationModel();
+        $this->retourModel  = new RetourModel();
     }
 
     // =========================================================
@@ -1126,6 +1129,196 @@ final class DashboardController extends Controller
             'flash'       => $this->getFlash(),
             'currentView' => 'mes-locations',
         ]);
+    }
+
+    // =========================================================
+    // BACKOFFICE — Retours
+    // =========================================================
+
+    /**
+     * Affiche la liste de tous les retours enregistrés.
+     */
+    public function retours(): void
+    {
+        if (!$this->isAuthenticated()) {
+            $this->redirect('home');
+        }
+
+        if (!in_array($this->currentRole(), ['Agent', 'Responsable'], true)) {
+            $this->redirect($this->homeRedirectRoute());
+        }
+
+        $this->render('dashboards/retours', [
+            'user'    => $this->currentUser(),
+            'retours' => $this->retourModel->getAll(),
+            'flash'   => $this->getFlash(),
+        ]);
+    }
+
+    /**
+     * Traite les actions POST sur les retours (add / valider).
+     */
+    public function retoursAction(): void
+    {
+        if (!$this->isAuthenticated()) {
+            $this->redirect('home');
+        }
+
+        if (!in_array($this->currentRole(), ['Agent', 'Responsable'], true)) {
+            $this->redirect($this->homeRedirectRoute());
+        }
+
+        $action   = (string) ($_POST['action'] ?? '');
+        $postData = $_POST ?? [];
+
+        if ($action === 'add') {
+            $this->addRetour($postData);
+            $this->redirect('retours');
+        } elseif ($action === 'valider') {
+            if ($this->currentRole() !== 'Responsable') {
+                $this->setFlash('danger', 'Seul le Responsable Inventaire peut valider un retour.');
+                $this->redirect('retours');
+            }
+            $this->validerRetour($postData);
+            $this->redirect('retours');
+        } else {
+            $this->redirect('retours');
+        }
+    }
+
+    /**
+     * Affiche le formulaire d'enregistrement d'un retour (Agent).
+     */
+    public function enregistrerRetour(): void
+    {
+        if (!$this->isAuthenticated()) {
+            $this->redirect('home');
+        }
+
+        if (!in_array($this->currentRole(), ['Agent', 'Responsable'], true)) {
+            $this->redirect($this->homeRedirectRoute());
+        }
+
+        $this->render('dashboards/enregistrer_retour', [
+            'user'      => $this->currentUser(),
+            'locations' => $this->retourModel->getLocationsEnCours(),
+            'etats'     => EquipmentModel::ETATS,
+            'flash'     => $this->getFlash(),
+        ]);
+    }
+
+    /**
+     * Endpoint AJAX : retourne les infos d'une location en JSON.
+     */
+    public function getLocationJson(): void
+    {
+        if (!$this->isAuthenticated()) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Non autorisé']);
+            exit;
+        }
+
+        $id       = (int) ($_GET['id'] ?? 0);
+        $location = $this->retourModel->findLocationById($id);
+
+        header('Content-Type: application/json; charset=utf-8');
+
+        if ($location === false) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Location introuvable']);
+            exit;
+        }
+
+        echo json_encode($location, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    /**
+     * Enregistre un retour (statut "En attente").
+     * Ne modifie PAS encore l'équipement ni la location.
+     *
+     * @param array<string, mixed> $data
+     */
+    private function addRetour(array $data): void
+    {
+        $locationId    = (int) ($data['location_id'] ?? 0);
+        $dateRetour    = trim((string) ($data['date_retour'] ?? ''));
+        $etatEquipement = trim((string) ($data['etat_equipement'] ?? ''));
+
+        if ($locationId <= 0) {
+            $this->setFlash('danger', 'Veuillez sélectionner une location.');
+            return;
+        }
+
+        $location = $this->retourModel->findLocationById($locationId);
+
+        if ($location === false) {
+            $this->setFlash('danger', 'Location introuvable.');
+            return;
+        }
+
+        if (!in_array((string) ($location['statut'] ?? ''), ['Acceptée', 'En cours'], true)) {
+            $this->setFlash('danger', 'Cette location n\'est pas en cours.');
+            return;
+        }
+
+        if (!in_array($etatEquipement, EquipmentModel::ETATS, true)) {
+            $this->setFlash('danger', 'État de l\'équipement invalide.');
+            return;
+        }
+
+        $dateRetourObj = \DateTimeImmutable::createFromFormat('Y-m-d', $dateRetour);
+        if (!$dateRetourObj || $dateRetourObj->format('Y-m-d') !== $dateRetour) {
+            $this->setFlash('danger', 'Date de retour invalide.');
+            return;
+        }
+
+        // Calcul côté serveur — ne jamais faire confiance au navigateur
+        $dateFinObj  = \DateTimeImmutable::createFromFormat('Y-m-d', (string) $location['date_fin']);
+        $joursRetard = 0;
+        $frais       = 0.0;
+
+        if ($dateFinObj && $dateRetourObj > $dateFinObj) {
+            $joursRetard = (int) $dateFinObj->diff($dateRetourObj)->days;
+            $frais       = (float) ($joursRetard * 10);
+        }
+
+        try {
+            $this->retourModel->create([
+                'location_id'        => $locationId,
+                'date_retour'        => $dateRetour,
+                'etat_equipement'    => $etatEquipement,
+                'jours_retard'       => $joursRetard,
+                'frais_additionnels' => $frais,
+                'statut'             => 'En attente',
+            ]);
+            $this->setFlash('success', 'Retour enregistré avec succès. En attente de validation par le Responsable Inventaire.');
+        } catch (\Exception $e) {
+            $this->setFlash('danger', 'Erreur lors de l\'enregistrement : ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Valide définitivement un retour (Responsable Inventaire uniquement).
+     * Exécute la transaction : retour → Validé, équipement → état + stock+1, location → Terminée.
+     *
+     * @param array<string, mixed> $data
+     */
+    private function validerRetour(array $data): void
+    {
+        $idRetour = (int) ($data['id_retour'] ?? 0);
+
+        if ($idRetour <= 0) {
+            $this->setFlash('danger', 'Données invalides.');
+            return;
+        }
+
+        try {
+            $this->retourModel->valider($idRetour);
+            $this->setFlash('success', 'Retour validé avec succès. Stock mis à jour, location clôturée.');
+        } catch (\RuntimeException $e) {
+            $this->setFlash('danger', $e->getMessage());
+        }
     }
 
     // =========================================================

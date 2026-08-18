@@ -55,6 +55,10 @@ $router->post('locations', [$dashboardController, 'locationsAction']);
 $router->get('generer-facture', [$dashboardController, 'genererFacture']);
 $router->get('utilisateurs', [$dashboardController, 'users']);
 $router->post('utilisateurs', [$dashboardController, 'usersAction']);
+$router->get('retours', [$dashboardController, 'retours']);
+$router->post('retours', [$dashboardController, 'retoursAction']);
+$router->get('enregistrer-retour', [$dashboardController, 'enregistrerRetour']);
+$router->get('location-json', [$dashboardController, 'getLocationJson']);
 $router->get('logout', [$dashboardController, 'logout']);
 
 // ── FrontOffice Client — Catalogue ─────────────────────────────
