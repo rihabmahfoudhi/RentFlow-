@@ -11,14 +11,14 @@
                         </div>
                     </div>
                     <div class="list-group list-group-flush mb-4">
-                        <a href="index.php?route=categories" class="list-group-item list-group-item-action rounded-3 mb-2 active"> CatÃ©gories des Ã©quipements</a>
+                        <a href="index.php?route=categories" class="list-group-item list-group-item-action rounded-3 mb-2 active"> Categories des equipements</a>
                         <a href="index.php?route=equipements" class="list-group-item list-group-item-action rounded-3 mb-2"> Equipements</a>
                         <a href="index.php?route=locations" class="list-group-item list-group-item-action rounded-3 mb-2"> Locations</a>
                         <a href="index.php?route=retours" class="list-group-item list-group-item-action rounded-3 mb-2"> Retours</a>
                         <a href="index.php?route=utilisateurs" class="list-group-item list-group-item-action rounded-3 mb-2"> Utilisateurs</a>
                         <a href="index.php?route=client-dashboard" class="list-group-item list-group-item-action rounded-3 mb-2"> Espace client</a>
                     </div>
-                    <a href="index.php?route=logout" class="btn btn-danger w-100">ðŸšª DÃ©connexion</a>
+                    <a href="index.php?route=logout" class="btn btn-danger w-100">Deconnexion</a>
                 </div>
             </div>
         </aside>
@@ -29,11 +29,11 @@
                     <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
                         <div>
                             <div class="section-kicker">Administration</div>
-                            <h2 class="fw-bold mb-1">CatÃ©gories des Ã©quipements</h2>
-                            <p class="text-muted mb-0">GÃ©rez les catÃ©gories d'Ã©quipements disponibles</p>
+                            <h2 class="fw-bold mb-1">Catégories des équipements</h2>
+                            <p class="text-muted mb-0">Gérez les catégories d'équipements disponibles</p>
                         </div>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                            <i class="bi bi-plus-circle"></i> Ajouter une catÃ©gorie
+                            <i class="bi bi-plus-circle"></i> Ajouter une catégorie
                         </button>
                     </div>
 
@@ -44,7 +44,7 @@
                         </div>
                     <?php endif; ?>
 
-                    <!-- Tableau des catÃ©gories -->
+                    <!-- Tableau des catégories -->
                     <div class="table-responsive">
                         <table class="table table-hover border rounded-3" style="overflow: hidden;">
                             <thead class="table-light">
@@ -59,7 +59,7 @@
                                 <?php if (empty($categories)): ?>
                                     <tr>
                                         <td colspan="4" class="text-center py-4 text-muted">
-                                            Aucune catÃ©gorie trouvÃ©e. Commencez par en ajouter une !
+                                            Aucune catégorie trouvée. Commencez par en ajouter une !
                                         </td>
                                     </tr>
                                 <?php else: ?>
@@ -97,7 +97,7 @@
 
                     <div class="mt-3 text-end">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                            <i class="bi bi-plus-circle"></i> Ajouter une catÃ©gorie
+                            <i class="bi bi-plus-circle"></i> Ajouter une catégorie
                         </button>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
     </div>
 </div>
 
-<!-- Modal Ajouter une catÃ©gorie -->
+<!-- Modal Ajouter une catégorie -->
 <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content rounded-4">
@@ -138,12 +138,12 @@
     </div>
 </div>
 
-<!-- Modal Modifier une catÃ©gorie -->
+<!-- Modal Modifier une catégorie -->
 <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content rounded-4">
             <div class="modal-header border-0">
-                <h5 class="modal-title" id="editCategoryLabel">Modifier une catÃ©gorie</h5>
+                <h5 class="modal-title" id="editCategoryLabel">Modifier une catégorie</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="index.php?route=categories" class="needs-validation">
@@ -152,13 +152,13 @@
                     <input type="hidden" name="id" id="editId" value="">
 
                     <div class="mb-3">
-                        <label for="editNom" class="form-label fw-bold">Nom de la catÃ©gorie <span class="text-danger">*</span></label>
+                        <label for="editNom" class="form-label fw-bold">Nom de la catégorie <span class="text-danger">*</span></label>
                         <input type="text" class="form-control rounded-3" id="editNom" name="nom" placeholder="Ex: Forgeuses" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="editDescription" class="form-label fw-bold">Description</label>
-                        <textarea class="form-control rounded-3" id="editDescription" name="description" rows="3" placeholder="Description dÃ©taillÃ©e..."></textarea>
+                        <textarea class="form-control rounded-3" id="editDescription" name="description" rows="3" placeholder="Description détaillée..."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer border-0">
@@ -170,7 +170,7 @@
     </div>
 </div>
 
-<!-- Formulaire suppression (cachÃ©) -->
+<!-- Formulaire suppression (caché) -->
 <form id="deleteForm" method="POST" action="index.php?route=categories" style="display: none;">
     <input type="hidden" name="action" value="delete">
     <input type="hidden" name="id" id="deleteId" value="">
@@ -184,7 +184,7 @@ function loadCategoryEdit(id, nom, description) {
 }
 
 function deleteCategoryConfirm(id) {
-    if (confirm('ÃŠtes-vous sÃ»r de vouloir supprimer cette catÃ©gorie ?\n\nCette action est irrÃ©versible.')) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?\n\nCette action est irréversible.')) {
         document.getElementById('deleteId').value = id;
         document.getElementById('deleteForm').submit();
     }

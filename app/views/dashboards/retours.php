@@ -57,7 +57,7 @@ $etatLabels = [
                             <h2 class="fw-bold mb-1">Gestion des retours</h2>
                             <p class="text-muted mb-0">Enregistrez et validez les retours d'équipements loués</p>
                         </div>
-                        <a href="index.php?route=enregistrer-retour" class="btn btn-primary px-4">
+                        <a href="index.php?route=enregistrer-retour" class="btn btn-primary px-6 mt-5"style="transform: translateY(10px);">
                             <i class="bi bi-box-arrow-in-left me-2"></i>Enregistrer un retour
                         </a>
                     </div>

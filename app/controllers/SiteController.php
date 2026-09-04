@@ -27,24 +27,9 @@ final class SiteController extends Controller
         $this->render('home', $data);
     }
 
-    public function about(): void
-    {
-        $this->render('about', $this->pageModel->getPageData('about'));
-    }
-
-    public function services(): void
-    {
-        $this->render('services', $this->pageModel->getPageData('services'));
-    }
-
     public function team(): void
     {
         $this->redirect('home');
-    }
-
-    public function contact(): void
-    {
-        $this->render('contact', $this->pageModel->getPageData('contact'));
     }
 
     public function loginForm(): void
@@ -165,7 +150,7 @@ final class SiteController extends Controller
             'nom' => $formData['nom'],
             'prenom' => $formData['prenom'],
             'email' => $formData['email'],
-            'mot_de_passe' => password_hash($formData['mot_de_passe'], PASSWORD_DEFAULT),
+            'mot_de_passe' => $formData['mot_de_passe'],
             'telephone' => $formData['telephone'],
             'role' => $formData['role'],
         ]);

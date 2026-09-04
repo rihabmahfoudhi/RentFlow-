@@ -6,6 +6,6 @@
             <div class="fw-bold text-white mb-1"><?= $siteName; ?></div>
             <div class="small">RentFlow, votre solution moderne de location d’équipements.</div>
         </div>
-        <div class="small">Accueil · A propos · Services · Contact</div>
+        <div class="small">Accueil · Connexion · Inscription</div>
     </div>
 </footer>

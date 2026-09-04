@@ -3,7 +3,7 @@ $etatLabels = [
     'Disponible' => ['Disponible', 'success'],
     'En location' => ['En location', 'primary'],
     'Maintenance' => ['Maintenance', 'warning'],
-    'Endommage' => ['EndommagÃ©', 'danger'],
+    'Endommage' => ['Endommage', 'danger'],
 ];
 ?>
 <div class="container-fluid py-4" style="background:#f8fafc; min-height:100vh;">
@@ -19,14 +19,14 @@ $etatLabels = [
                         </div>
                     </div>
                     <div class="list-group list-group-flush mb-4">
-                        <a href="index.php?route=categories" class="list-group-item list-group-item-action rounded-3 mb-2"> CatÃ©gories des Ã©quipements</a>
+                        <a href="index.php?route=categories" class="list-group-item list-group-item-action rounded-3 mb-2"> Catégories des équipements</a>
                         <a href="index.php?route=equipements" class="list-group-item list-group-item-action rounded-3 mb-2 active"> Equipements</a>
                         <a href="index.php?route=locations" class="list-group-item list-group-item-action rounded-3 mb-2"> Locations</a>
                         <a href="index.php?route=retours" class="list-group-item list-group-item-action rounded-3 mb-2"> Retours</a>
                         <a href="index.php?route=utilisateurs" class="list-group-item list-group-item-action rounded-3 mb-2"> Utilisateurs</a>
                         <a href="index.php?route=client-dashboard" class="list-group-item list-group-item-action rounded-3 mb-2"> Espace client</a>
                     </div>
-                    <a href="index.php?route=logout" class="btn btn-danger w-100">ðŸšª DÃ©connexion</a>
+                    <a href="index.php?route=logout" class="btn btn-danger w-100"> Déconnexion</a>
                 </div>
             </div>
         </aside>
@@ -37,11 +37,11 @@ $etatLabels = [
                     <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
                         <div>
                             <div class="section-kicker">Administration</div>
-                            <h2 class="fw-bold mb-1">Catalogue des Ã©quipements</h2>
-                            <p class="text-muted mb-0">GÃ©rez les Ã©quipements disponibles Ã  la location</p>
+                            <h2 class="fw-bold mb-1">Catalogue des équipements</h2>
+                            <p class="text-muted mb-0">Gérez les équipements disponibles à la location</p>
                         </div>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEquipmentModal">
-                            <i class="bi bi-plus-circle"></i> Ajouter un Ã©quipement
+                            <i class="bi bi-plus-circle"></i> Ajouter un équipement
                         </button>
                     </div>
 
@@ -86,9 +86,9 @@ $etatLabels = [
                         </div>
 
                         <div class="col-md-3">
-                            <label for="searchEtat" class="form-label fw-bold small">Recherche par Ã©tat</label>
+                            <label for="searchEtat" class="form-label fw-bold small">Recherche par état</label>
                             <select class="form-select rounded-3" id="searchEtat" name="search_etat">
-                                <option value="">Tous les Ã©tats</option>
+                                <option value="">Tous les états</option>
                                 <?php foreach ($etats as $etatValue): ?>
                                     <option value="<?= htmlspecialchars($etatValue, ENT_QUOTES, 'UTF-8'); ?>" <?= ($searchEtat ?? '') === $etatValue ? 'selected' : ''; ?>>
                                         <?= htmlspecialchars($etatLabels[$etatValue][0] ?? $etatValue, ENT_QUOTES, 'UTF-8'); ?>
@@ -98,9 +98,9 @@ $etatLabels = [
                         </div>
 
                         <div class="col-md-3">
-                            <label for="searchCategorie" class="form-label fw-bold small">Recherche par catÃ©gorie</label>
+                            <label for="searchCategorie" class="form-label fw-bold small">Recherche par catégories</label>
                             <select class="form-select rounded-3" id="searchCategorie" name="search_categorie">
-                                <option value="">Toutes les catÃ©gories</option>
+                                <option value="">Toutes les catégories</option>
                                 <?php foreach ($categories as $cat): ?>
                                     <option value="<?= (int) ($cat['id_categorie'] ?? 0); ?>" <?= (string) ($searchCategorie ?? '') === (string) ($cat['id_categorie'] ?? '') ? 'selected' : ''; ?>>
                                         <?= htmlspecialchars((string) ($cat['nom'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
@@ -126,13 +126,13 @@ $etatLabels = [
                                 <tr>
                                     <th class="ps-4">ID</th>
                                     <th>Nom</th>
-                                    <th>CatÃ©gorie</th>
+                                    <th>Catégorie</th>
                                     <th>Description</th>
                                     <th>Prix/jour</th>
                                     <th>Stock</th>
                                     <th>Seuil alerte</th>
-                                    <th>Ã‰tat</th>
-                                    
+                                    <th>Etat</th>
+
                                     <th class="text-end pe-4">Actions</th>
                                 </tr>
                             </thead>
@@ -141,9 +141,9 @@ $etatLabels = [
                                     <tr>
                                         <td colspan="9" class="text-center py-4 text-muted">
                                             <?php if (($searchId ?? '') !== '' || ($searchEtat ?? '') !== '' || ($searchCategorie ?? '') !== ''): ?>
-                                                Aucun Ã©quipement ne correspond Ã  ces critÃ¨res de recherche.
+                                                Aucun équipement ne correspond à ces critères de recherche.
                                             <?php else: ?>
-                                                Aucun Ã©quipement trouvÃ©. Commencez par en ajouter un !
+                                                Aucun équipement trouvé. Commencez par en ajouter un !
                                             <?php endif; ?>
                                         </td>
                                     </tr>
@@ -200,7 +200,7 @@ $etatLabels = [
 
                     <div class="mt-3 text-end">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEquipmentModal">
-                            <i class="bi bi-plus-circle"></i> Ajouter un Ã©quipement
+                            <i class="bi bi-plus-circle"></i> Ajouter un équipement
                         </button>
                     </div>
                 </div>
@@ -214,7 +214,7 @@ $etatLabels = [
     <div class="modal-dialog">
         <div class="modal-content rounded-4">
             <div class="modal-header border-0">
-                <h5 class="modal-title" id="addEquipmentLabel">Ajouter un Ã©quipement</h5>
+                <h5 class="modal-title" id="addEquipmentLabel">Ajouter un équipement</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="index.php?route=equipements" class="needs-validation">
@@ -222,7 +222,7 @@ $etatLabels = [
                     <input type="hidden" name="action" value="add">
 
                     <div class="mb-3">
-                        <label for="addNom" class="form-label fw-bold">Nom de l'Ã©quipement <span class="text-danger">*</span></label>
+                        <label for="addNom" class="form-label fw-bold">Nom de l'équipement <span class="text-danger">*</span></label>
                         <input type="text" class="form-control rounded-3" id="addNom" name="nom" placeholder="Ex: Perceuse" required>
                         <small class="form-text text-muted">Le nom est obligatoire</small>
                     </div>
@@ -248,7 +248,7 @@ $etatLabels = [
                     </div>
 
                     <div class="mb-3">
-                        <label for="addEtat" class="form-label fw-bold">Ã‰tat <span class="text-danger">*</span></label>
+                        <label for="addEtat" class="form-label fw-bold">Etat <span class="text-danger">*</span></label>
                         <select class="form-select rounded-3" id="addEtat" name="etat" required>
                             <?php foreach ($etats as $etatValue): ?>
                                 <option value="<?= htmlspecialchars($etatValue, ENT_QUOTES, 'UTF-8'); ?>"><?= htmlspecialchars($etatLabels[$etatValue][0] ?? $etatValue, ENT_QUOTES, 'UTF-8'); ?></option>
@@ -257,7 +257,7 @@ $etatLabels = [
                     </div>
 
                     <div class="mb-3">
-                        <label for="addCategorie" class="form-label fw-bold">CatÃ©gorie <span class="text-danger">*</span></label>
+                        <label for="addCategorie" class="form-label fw-bold">Catégorie <span class="text-danger">*</span></label>
                         <select class="form-select rounded-3" id="addCategorie" name="categorie_id" required>
                             <option value="">Choisir...</option>
                             <?php foreach ($categories as $cat): ?>
@@ -280,7 +280,7 @@ $etatLabels = [
     <div class="modal-dialog">
         <div class="modal-content rounded-4">
             <div class="modal-header border-0">
-                <h5 class="modal-title" id="editEquipmentLabel">Modifier un Ã©quipement</h5>
+                <h5 class="modal-title" id="editEquipmentLabel">Modifier un équipement</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="index.php?route=equipements" class="needs-validation">
@@ -289,7 +289,7 @@ $etatLabels = [
                     <input type="hidden" name="id" id="editId" value="">
 
                     <div class="mb-3">
-                        <label for="editNom" class="form-label fw-bold">Nom de l'Ã©quipement <span class="text-danger">*</span></label>
+                        <label for="editNom" class="form-label fw-bold">Nom de l'équipement <span class="text-danger">*</span></label>
                         <input type="text" class="form-control rounded-3" id="editNom" name="nom" required>
                     </div>
 

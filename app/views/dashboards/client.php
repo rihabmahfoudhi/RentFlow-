@@ -64,9 +64,7 @@ $prixJour = isset($equipement) ? (float)($equipement['prix_jour'] ?? 0) : 0;
                 <a href="index.php?route=catalogue" class="fo-nav-link <?= in_array($currentView, ['catalogue', 'catalogue-categorie']) ? 'fo-nav-link--active' : '' ?>">
                     <i class="fas fa-th-large"></i> Catégories
                 </a>
-                <a href="index.php?route=demande-location" class="fo-nav-link <?= in_array($currentView, ['demande-location', 'demande-succes']) ? 'fo-nav-link--active' : '' ?>">
-                    <i class="fas fa-file-signature"></i> Demande de location
-                </a>
+
                 <a href="index.php?route=mes-locations" class="fo-nav-link <?= $currentView === 'mes-locations' ? 'fo-nav-link--active' : '' ?>">
                     <i class="fas fa-history"></i> Historique
                 </a>

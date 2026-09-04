@@ -34,9 +34,6 @@ $siteController = new SiteController();
 // ── Routes publiques ───────────────────────────────────────────
 $router->get('', [$siteController, 'home']);
 $router->get('home', [$siteController, 'home']);
-$router->get('about', [$siteController, 'about']);
-$router->get('services', [$siteController, 'services']);
-$router->get('contact', [$siteController, 'contact']);
 $router->get('login', [$siteController, 'loginForm']);
 $router->post('login', [$siteController, 'login']);
 $router->get('register', [$siteController, 'registerForm']);

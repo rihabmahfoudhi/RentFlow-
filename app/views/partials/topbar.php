@@ -8,9 +8,6 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto">
             <a href="index.php?route=home" class="nav-item nav-link <?= htmlspecialchars((string) ($navHomeClass ?? ''), ENT_QUOTES, 'UTF-8'); ?>">Accueil</a>
-            <a href="index.php?route=about" class="nav-item nav-link <?= htmlspecialchars((string) ($navAboutClass ?? ''), ENT_QUOTES, 'UTF-8'); ?>">A propos</a>
-            <a href="index.php?route=services" class="nav-item nav-link <?= htmlspecialchars((string) ($navServicesClass ?? ''), ENT_QUOTES, 'UTF-8'); ?>">Services</a>
-            <a href="index.php?route=contact" class="nav-item nav-link <?= htmlspecialchars((string) ($navContactClass ?? ''), ENT_QUOTES, 'UTF-8'); ?>">Contact</a>
             <a href="index.php?route=login" class="nav-item nav-link">Connexion</a>
             <a href="index.php?route=register" class="nav-item nav-link">Inscription</a>
         </div>

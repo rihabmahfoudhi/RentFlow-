@@ -27,14 +27,14 @@ $etatLibelles = [
                         </div>
                     </div>
                     <div class="list-group list-group-flush mb-4">
-                        <a href="index.php?route=categories"        class="list-group-item list-group-item-action rounded-3 mb-2">Catégories des équipements</a>
-                        <a href="index.php?route=equipements"       class="list-group-item list-group-item-action rounded-3 mb-2">Équipements</a>
+                        <a href="index.php?route=categories"        class="list-group-item list-group-item-action rounded-3 mb-2">Categories des equipements</a>
+                        <a href="index.php?route=equipements"       class="list-group-item list-group-item-action rounded-3 mb-2">Equipements</a>
                         <a href="index.php?route=locations"         class="list-group-item list-group-item-action rounded-3 mb-2">Locations</a>
                         <a href="index.php?route=retours"           class="list-group-item list-group-item-action rounded-3 mb-2 active">Retours</a>
                         <a href="index.php?route=utilisateurs"      class="list-group-item list-group-item-action rounded-3 mb-2">Utilisateurs</a>
                         <a href="index.php?route=client-dashboard"  class="list-group-item list-group-item-action rounded-3 mb-2">Espace client</a>
                     </div>
-                    <a href="index.php?route=logout" class="btn btn-danger w-100">Déconnexion</a>
+                    <a href="index.php?route=logout" class="btn btn-danger w-100">Deconnexion</a>
                 </div>
             </div>
         </aside>
