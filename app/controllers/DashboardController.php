@@ -676,7 +676,7 @@ final class DashboardController extends Controller
         ];
 
         if ($password !== '') {
-            $userData['mot_de_passe'] = password_hash($password, PASSWORD_DEFAULT);
+            $userData['mot_de_passe'] = $password;
         }
 
         return $userData;

@@ -33,7 +33,7 @@
                             <p class="text-muted mb-0">Gérez les catégories d'équipements disponibles</p>
                         </div>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                            <i class="bi bi-plus-circle"></i> Ajouter une catégorie
+                            <i class="bi bi-plus-circle"></i> Ajouter une categorie
                         </button>
                     </div>
 
@@ -111,7 +111,7 @@
     <div class="modal-dialog">
         <div class="modal-content rounded-4">
             <div class="modal-header border-0">
-                <h5 class="modal-title" id="addCategoryLabel">Ajouter une catÃ©gorie</h5>
+                <h5 class="modal-title" id="addCategoryLabel">Ajouter une catégorie</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="index.php?route=categories" class="needs-validation">
@@ -119,14 +119,14 @@
                     <input type="hidden" name="action" value="add">
 
                     <div class="mb-3">
-                        <label for="addNom" class="form-label fw-bold">Nom de la catÃ©gorie <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control rounded-3" id="addNom" name="nom" placeholder="Ex: Forgeuses" required>
+                        <label for="addNom" class="form-label fw-bold">Nom de la catégorie <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control rounded-3" id="addNom" name="nom" placeholder="..." required>
                         <small class="form-text text-muted">Le nom est obligatoire</small>
                     </div>
 
                     <div class="mb-3">
                         <label for="addDescription" class="form-label fw-bold">Description</label>
-                        <textarea class="form-control rounded-3" id="addDescription" name="description" rows="3" placeholder="Description dÃ©taillÃ©e..."></textarea>
+                        <textarea class="form-control rounded-3" id="addDescription" name="description" rows="3" placeholder="..."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer border-0">
@@ -153,12 +153,12 @@
 
                     <div class="mb-3">
                         <label for="editNom" class="form-label fw-bold">Nom de la catégorie <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control rounded-3" id="editNom" name="nom" placeholder="Ex: Forgeuses" required>
+                        <input type="text" class="form-control rounded-3" id="editNom" name="nom" placeholder="..." required>
                     </div>
 
                     <div class="mb-3">
                         <label for="editDescription" class="form-label fw-bold">Description</label>
-                        <textarea class="form-control rounded-3" id="editDescription" name="description" rows="3" placeholder="Description détaillée..."></textarea>
+                        <textarea class="form-control rounded-3" id="editDescription" name="description" rows="3" placeholder="..."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer border-0">
@@ -184,7 +184,7 @@ function loadCategoryEdit(id, nom, description) {
 }
 
 function deleteCategoryConfirm(id) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?\n\nCette action est irréversible.')) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')) {
         document.getElementById('deleteId').value = id;
         document.getElementById('deleteForm').submit();
     }

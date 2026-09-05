@@ -106,6 +106,16 @@ final class UserModel extends Model
         );
     }
 
+    public function updatePassword(int $userId, string $passwordHash): int
+    {
+        return $this->update(
+            'utilisateur',
+            ['mot_de_passe' => $passwordHash],
+            'id_user = :id',
+            ['id' => $userId]
+        );
+    }
+
     /**
      * @param array<string, mixed> $data
      */

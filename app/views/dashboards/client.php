@@ -99,11 +99,6 @@ $prixJour = isset($equipement) ? (float)($equipement['prix_jour'] ?? 0) : 0;
                 <div class="fo-quick-label">Catalogue</div>
                 <div class="fo-quick-sub">Parcourir les catégories</div>
             </a>
-            <a href="index.php?route=demande-location" class="fo-quick-card" style="--qc:#e8f5e9; --qi:#4caf50;">
-                <div class="fo-quick-icon"><i class="fas fa-file-signature"></i></div>
-                <div class="fo-quick-label">Faire une demande</div>
-                <div class="fo-quick-sub">Réservez un équipement</div>
-            </a>
             <a href="index.php?route=mes-locations" class="fo-quick-card" style="--qc:#fff3e0; --qi:#ff9800;">
                 <div class="fo-quick-icon"><i class="fas fa-history"></i></div>
                 <div class="fo-quick-label">Mes Locations</div>
@@ -264,10 +259,6 @@ $prixJour = isset($equipement) ? (float)($equipement['prix_jour'] ?? 0) : 0;
                                     <i class="fas fa-ban"></i> Indisponible
                                 </button>
                             <?php endif; ?>
-                            <a href="index.php?route=equipement-detail&id_eq=<?= (int)$eq['id_eq'] ?>"
-                               class="fo-btn-detail">
-                                <i class="fas fa-info-circle"></i> Détails
-                            </a>
                         </div>
                     </div>
                 <?php endforeach; ?>

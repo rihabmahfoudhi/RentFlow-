@@ -52,8 +52,12 @@ final class SiteController extends Controller
         $password = (string) ($postData['mot_de_passe'] ?? '');
 
         $user = $this->userModel->findByEmail($email);
+        $storedPassword = (string) ($user['mot_de_passe'] ?? '');
+        $passwordIsValid = $user !== false && $password === $storedPassword;
 
-        if ($user === false || !password_verify($password, (string) ($user['mot_de_passe'] ?? ''))) {
+      
+
+        if (!$passwordIsValid) {
             $this->setFlash('danger', 'Identifiants invalides.');
             $this->render('login', [
                 'flash' => $this->getFlash(),
@@ -102,7 +106,9 @@ final class SiteController extends Controller
         $formData = [];
 
         foreach (['nom', 'prenom', 'email', 'mot_de_passe', 'telephone', 'role'] as $field) {
-            $formData[$field] = trim((string) ($postData[$field] ?? ''));
+            $formData[$field] = $field === 'mot_de_passe'
+                ? (string) ($postData[$field] ?? '')
+                : trim((string) ($postData[$field] ?? ''));
         }
 
         if ($formData['nom'] === '') {

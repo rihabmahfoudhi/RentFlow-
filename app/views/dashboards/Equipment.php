@@ -113,7 +113,7 @@ $etatLabels = [
                             <button type="submit" class="btn btn-primary rounded-3 flex-grow-1">
                                 <i class="bi bi-search"></i> Rechercher
                             </button>
-                            <a href="index.php?route=equipements" class="btn btn-outline-secondary rounded-3" title="RÃ©initialiser">
+                            <a href="index.php?route=equipements" class="btn btn-outline-secondary rounded-3" title="Reinitialiser">
                                 <i class="bi bi-x-circle"></i>
                             </a>
                         </div>
@@ -229,7 +229,7 @@ $etatLabels = [
 
                     <div class="mb-3">
                         <label for="addDescription" class="form-label fw-bold">Description</label>
-                        <textarea class="form-control rounded-3" id="addDescription" name="description" rows="3" placeholder="Description dÃ©taillÃ©e..."></textarea>
+                        <textarea class="form-control rounded-3" id="addDescription" name="description" rows="3" placeholder="Description détaillée..."></textarea>
                     </div>
 
                     <div class="mb-3">
@@ -314,7 +314,7 @@ $etatLabels = [
                     </div>
 
                     <div class="mb-3">
-                        <label for="editEtat" class="form-label fw-bold">Ã‰tat <span class="text-danger">*</span></label>
+                        <label for="editEtat" class="form-label fw-bold">état <span class="text-danger">*</span></label>
                         <select class="form-select rounded-3" id="editEtat" name="etat" required>
                             <?php foreach ($etats as $etatValue): ?>
                                 <option value="<?= htmlspecialchars($etatValue, ENT_QUOTES, 'UTF-8'); ?>"><?= htmlspecialchars($etatLabels[$etatValue][0] ?? $etatValue, ENT_QUOTES, 'UTF-8'); ?></option>
@@ -323,7 +323,7 @@ $etatLabels = [
                     </div>
 
                     <div class="mb-3">
-                        <label for="editCategorie" class="form-label fw-bold">CatÃ©gorie <span class="text-danger">*</span></label>
+                        <label for="editCategorie" class="form-label fw-bold">Catégorie <span class="text-danger">*</span></label>
                         <select class="form-select rounded-3" id="editCategorie" name="categorie_id" required>
                             <?php foreach ($categories as $cat): ?>
                                 <option value="<?= (int) ($cat['id_categorie'] ?? 0); ?>"><?= htmlspecialchars((string) ($cat['nom'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></option>

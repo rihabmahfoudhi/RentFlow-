@@ -39,7 +39,7 @@ $roleLabels = [
                             <h2 class="fw-bold mb-1">Gestion des utilisateurs</h2>
                             <p class="text-muted mb-0">Gerez les comptes et les roles de la plateforme</p>
                         </div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                        <button type="button" class="btn btn-primary mt-5" data-bs-toggle="modal" data-bs-target="#addUserModal">
                             <i class="bi bi-plus-circle"></i> Ajouter un utilisateur
                         </button>
                     </div>
@@ -111,10 +111,13 @@ $roleLabels = [
                                                     onclick='loadUserEdit(<?= json_encode($editPayload, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE); ?>)'>
                                                     <i class="bi bi-pencil"></i> Modifier
                                                 </button>
-                                                <button type="button" class="btn btn-sm btn-outline-danger"
-                                                    onclick="deleteUserConfirm(<?= (int) ($managedUser['id_user'] ?? 0); ?>)">
-                                                    <i class="bi bi-trash"></i> Supprimer
-                                                </button>
+                                                <form method="POST" action="index.php?route=utilisateurs" class="d-inline">
+                                                    <input type="hidden" name="action" value="delete">
+                                                    <input type="hidden" name="id" value="<?= (int) ($managedUser['id_user'] ?? 0); ?>">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="bi bi-trash"></i> Supprimer
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -239,11 +242,6 @@ $roleLabels = [
     </div>
 </div>
 
-<form id="deleteForm" method="POST" action="index.php?route=utilisateurs" style="display: none;">
-    <input type="hidden" name="action" value="delete">
-    <input type="hidden" name="id" id="deleteId" value="">
-</form>
-
 <script>
 function loadUserEdit(payload) {
     document.getElementById('editId').value = payload[0];
@@ -253,13 +251,6 @@ function loadUserEdit(payload) {
     document.getElementById('editTelephone').value = payload[4];
     document.getElementById('editRole').value = payload[5];
     document.getElementById('editPassword').value = '';
-}
-
-function deleteUserConfirm(id) {
-    if (confirm('Etes-vous sur de vouloir supprimer cet utilisateur ?\n\nCette action est irreversible.')) {
-        document.getElementById('deleteId').value = id;
-        document.getElementById('deleteForm').submit();
-    }
 }
 
 (function () {
